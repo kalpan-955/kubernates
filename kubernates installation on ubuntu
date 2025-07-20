@@ -58,7 +58,7 @@ kubectl version --client
 
 //////////////////////         https://www.youtube.com/watch?v=kqBX3oBBe4g&t=44s     /////////////////////////////////////////////  this is the utub for installation kubernates link
 
-kubeadm init
+sudo kubeadm init
 kubectl get nodes
 
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml
