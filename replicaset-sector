@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs.yaml
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+      type: frontend
+  template:
+    metadata:
+      name: my-first-pod-1
+      labels:
+        app: nginx
+        type: frontend
+    spec:
+      containers:
+      - name: nginx-app
+        image: nginx
