@@ -7,3 +7,10 @@ spec:
   - port: 5432
   selector:
     app: postgres
+
+
+    this is for postgres database so from deployment file to this file to interliknk the port
+
+    “In Kubernetes, we create a Deployment for PostgreSQL to manage the database Pod and ensure it can be restarted or scaled easily.
+We create a Service to provide a stable internal DNS name (postgres) so that other Pods can reliably connect to the database, regardless of the Pod’s IP.
+The Service also ensures internal access (ClusterIP) and decouples the application from the database Pod, making updates or restarts seamless.”
