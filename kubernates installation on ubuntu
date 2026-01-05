@@ -61,7 +61,7 @@ kubectl version --client
 sudo su
 sudo kubeadm init
 exit
-sudo chown ubuntu:ubuntu /home/ubuntu/.kube/config
+
 
 kubectl get nodes
 
