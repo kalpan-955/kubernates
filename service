@@ -11,4 +11,10 @@ spec:
     - name: http-request
       port: 8080
       targetPort: 80
+
+
+
+mistakes:
+
+targetPort  p should be capital
  
