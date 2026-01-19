@@ -1,0 +1,9 @@
+apiVersion: v1
+kind:  ConfigMap
+metadata:
+  name: db-configmap
+data:
+  databasename: test
+  nginx.conf:
+    this is nginx
+    configmap example
