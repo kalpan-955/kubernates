@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: ssl-certs
+        emptyDir: {}
+      - name: nginx-configs
+        configMap:
+          name: nginx-configs
+      - name: nginx-logs
+        emptyDir: {}
+      - name: aws-configs
+        configMap:
+          name: aws-config
+          defaultMode: 0755
+
+      initContainers:
+      - name: ssl-cert-creation
+        image: deekshithsn/openssl
+        command: ["/bin/sh","-c"]
+        args:
+          - |
+            mkdir -p /etc/nginx/ssl && \
+            openssl req -newkey rsa:2048 -nodes \
+            -keyout /etc/nginx/ssl/nginx.key \
+            -x509 -days 365 \
+            -out /etc/nginx/ssl/nginx.crt \
+            -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=example.com"
+        volumeMounts:
+        - name: ssl-certs
+          mountPath: /etc/nginx/ssl
+
+      containers:
+      - name: nginx
+        image: deekshithsn/nginxhttps
+        command: ["/home/auto-reload-nginx.sh"]
+        volumeMounts:
+        - name: ssl-certs
+          mountPath: /etc/nginx/ssl
+        - name: nginx-configs
+          mountPath: /etc/nginx/conf.d
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+
+      - name: aws-log-exporter
+        image: xueshanf/awscli
+        command: ["/bin/sh","/root/scripts/syncs3.sh"]
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+        - name: aws-configs
+          mountPath: /root/.aws/config
+          subPath: config
+        - name: aws-configs
+          mountPath: /root/scripts/syncs3.sh
+          subPath: syncs3.sh
